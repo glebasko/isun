@@ -1,4 +1,5 @@
-﻿using isun.Domain.Interfaces;
+﻿using isun.Domain.DTO;
+using isun.Domain.Interfaces;
 using isun.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +19,17 @@ namespace isun
                     Environment.Exit(1);
                 }
 
-                await ValidateIfArgsAreValidCities(args);
+                var serviceProvider = RegisterDependencies();
+
+                var iWeatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
+
+                await ValidateIfArgsAreValidCities(iWeatherForecastApiService, args);
+
+                foreach (var arg in args)
+                {
+                    WeatherRecordDto weatherRecordDto = await iWeatherForecastApiService.GetWeatherRecordAsync(arg);
+                    PrintOutWeatherForecast(weatherRecordDto);
+                }
             }
             catch (Exception ex)
             {
@@ -39,13 +50,9 @@ namespace isun
             return serviceProvider;
         }
 
-        private static async Task<bool> ValidateIfArgsAreValidCities(string[] args)
+        private static async Task<bool> ValidateIfArgsAreValidCities(IWeatherForecastApiService weatherForecastApiService, string[] args)
         {
-            var serviceProvider = RegisterDependencies();
-
-            var iWeatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
-
-            var apiCities = await iWeatherForecastApiService.GetCitiesAsync();
+            var apiCities = await weatherForecastApiService.GetCitiesAsync();
 
             foreach (var arg in args)
             {
@@ -64,6 +71,15 @@ namespace isun
             }
 
             return true;
+        }
+
+        private static void PrintOutWeatherForecast(WeatherRecordDto weatherRecordDto)
+        {
+            Console.WriteLine("\nCity: " + weatherRecordDto.City);
+            Console.WriteLine("Temperature: " +weatherRecordDto.Temperature);
+            Console.WriteLine("Precipitation: " + weatherRecordDto.Precipitation);
+            Console.WriteLine("WindSpeed: " + weatherRecordDto.WindSpeed);
+            Console.WriteLine("Summary: " + weatherRecordDto.Summary);
         }
     }
 }

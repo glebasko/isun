@@ -5,6 +5,6 @@ namespace isun.Domain.Interfaces
 	public interface IWeatherForecastApiService
 	{
         public Task<IEnumerable<string>> GetCitiesAsync();
-        public Task<WeatherRecordDto> GetWeatherRecordAsync();
+        public Task<WeatherRecordDto> GetWeatherRecordAsync(string city);
     }
 }

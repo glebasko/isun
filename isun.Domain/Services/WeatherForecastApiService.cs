@@ -12,13 +12,14 @@ namespace isun.Domain.Services
         public WeatherForecastApiService() 
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://weather-api.isun.ch/api/");
+            _httpClient.BaseAddress = new Uri("https://weather-api.isun.ch/api/"); //TODO: move to config file
 
             AuthorizeHttpClient().Wait();
         }
 
         private async Task AuthorizeHttpClient()
 		{
+            //TODO: move to config file
             var parameters = new
             {
                 Username = "isun",
@@ -41,9 +42,10 @@ namespace isun.Domain.Services
             _httpClient.DefaultRequestHeaders.Add("Authorization", authorizationTokenDto.Token); 
         }
 
+        //TODO: refactor returns
 		public async Task<IEnumerable<string>> GetCitiesAsync()
 		{       
-            var response = await _httpClient.GetAsync("https://weather-api.isun.ch/api/cities");
+            var response = await _httpClient.GetAsync("cities");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -57,9 +59,21 @@ namespace isun.Domain.Services
             return cities;
 		}
 
-		public async Task<WeatherRecordDto> GetWeatherRecordAsync()
+		public async Task<WeatherRecordDto> GetWeatherRecordAsync(string city)
 		{
-			throw new NotImplementedException();
-		}
+            var response = await _httpClient.GetAsync("weathers/" + city);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                // TODO: return more details
+                return null;
+            }
+
+            string jsonString = await response.Content.ReadAsStringAsync();
+
+            var weatherRecordDto = JsonConvert.DeserializeObject<WeatherRecordDto>(jsonString);
+
+            return weatherRecordDto;
+        }
 	}
 }
