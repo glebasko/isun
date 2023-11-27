@@ -18,15 +18,6 @@ namespace isun
                     Environment.Exit(1);
                 }
 
-                //Console.WriteLine("\nCommand-line arguments:");
-
-                //// Display each command-line argument
-                //for (int i = 0; i < args.Length; i++)
-                //{
-                //    Console.WriteLine($"Argument {i + 1}: {args[i]}");
-                //}
-
-
                 await ValidateIfArgsAreValidCities(args);
             }
             catch (Exception ex)
