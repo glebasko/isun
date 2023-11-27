@@ -23,7 +23,11 @@ namespace isun
 
                 var iWeatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
 
-                await ValidateIfArgsAreValidCities(iWeatherForecastApiService, args);
+                if (!await ValidateIfArgsAreValidCities(iWeatherForecastApiService, args))
+                {
+                    Console.WriteLine("\nPlease run the application with the cities from the list above. Terminating the application..");
+                    Environment.Exit(1);
+                }
 
                 foreach (var arg in args)
                 {

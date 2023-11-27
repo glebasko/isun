@@ -2,7 +2,7 @@
   "profiles": {
     "isun": {
       "commandName": "Project",
-      "commandLineArgs": "Vilnius Kaunas"
+      "commandLineArgs": "Vilnius Kaunass"
     }
   }
 }
