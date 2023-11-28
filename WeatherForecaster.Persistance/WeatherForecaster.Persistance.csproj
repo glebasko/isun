@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WeatherForecaster.Domain\WeatherForecaster.Domain.csproj" />
     <ProjectReference Include="..\WeatherForecaster.SharedConfig\WeatherForecaster.SharedConfig.csproj" />
   </ItemGroup>
 
