@@ -17,31 +17,6 @@ namespace WeatherForecaster.Domain.Services
             AuthorizeHttpClient().Wait();
         }
 
-        private async Task AuthorizeHttpClient()
-		{
-            //TODO: move to config file
-            var parameters = new
-            {
-                Username = "isun",
-                Password = "passwrod"
-            };
-
-            string jsonParameters = JsonConvert.SerializeObject(parameters);
-
-            var response = await _httpClient.PostAsync("authorize", new StringContent(jsonParameters, Encoding.UTF8, "application/json"));
-
-            if (!response.IsSuccessStatusCode || response.Content is null)
-            {
-                return;
-            }
-   
-            string jsonString = await response.Content.ReadAsStringAsync();
-
-			var authorizationTokenDto = JsonConvert.DeserializeObject<AuthorizationTokenDto>(jsonString);
-
-            _httpClient.DefaultRequestHeaders.Add("Authorization", authorizationTokenDto.Token); 
-        }
-
         //TODO: refactor returns
 		public async Task<IEnumerable<string>> GetCitiesAsync()
 		{       
@@ -75,5 +50,30 @@ namespace WeatherForecaster.Domain.Services
 
             return weatherRecordDto;
         }
+
+		private async Task AuthorizeHttpClient()
+		{
+			//TODO: move to config file
+			var parameters = new
+			{
+				Username = "isun",
+				Password = "passwrod"
+			};
+
+			string jsonParameters = JsonConvert.SerializeObject(parameters);
+
+			var response = await _httpClient.PostAsync("authorize", new StringContent(jsonParameters, Encoding.UTF8, "application/json"));
+
+			if (!response.IsSuccessStatusCode || response.Content is null)
+			{
+				return;
+			}
+
+			string jsonString = await response.Content.ReadAsStringAsync();
+
+			var authorizationTokenDto = JsonConvert.DeserializeObject<AuthorizationTokenDto>(jsonString);
+
+			_httpClient.DefaultRequestHeaders.Add("Authorization", authorizationTokenDto.Token);
+		}
 	}
 }

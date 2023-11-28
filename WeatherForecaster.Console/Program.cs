@@ -1,5 +1,4 @@
-﻿using WeatherForecaster.Domain.DTO;
-using WeatherForecaster.Domain.Interfaces;
+﻿using WeatherForecaster.Domain.Interfaces;
 using WeatherForecaster.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +19,7 @@ namespace WeatherForecaster.ConsoleUI
 
 				if (args.Length == 0)
 				{
-					Console.WriteLine("\nNo command-line arguments provided.");
+					Console.WriteLine("\nNo command-line arguments provided."); //TODO: display the list of cities available
 					Environment.Exit(1);
 				}
 
@@ -30,34 +29,23 @@ namespace WeatherForecaster.ConsoleUI
 
 				await DbInitializer.InitializeDbAsync(db);
 
-				var iWeatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
+				var weatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
 
-				if (!await ValidateIfArgsAreValidCities(iWeatherForecastApiService, args))
+				if (!await ValidateIfArgsAreValidCities(weatherForecastApiService, args))
 				{
 					Console.WriteLine("\nPlease run the application with the cities from the list above. Terminating the application..");
 					Environment.Exit(1);
 				}
 
-				var weatherRecords = new List<WeatherRecordDto>();
+				var weatherRecordRepository = serviceProvider.GetRequiredService<IWeatherRecordRepository>();
 
-				foreach (var arg in args)
-				{
-					WeatherRecordDto weatherRecordDto = await iWeatherForecastApiService.GetWeatherRecordAsync(arg);
-					weatherRecords.Add(weatherRecordDto);
-					PrintOutWeatherForecast(weatherRecordDto);
-				}
+				var myReccuringTask = new WeatherForecastUpdaterTask(weatherForecastApiService, weatherRecordRepository, TimeSpan.FromSeconds(15), args); //TODO: get interval from config
+				myReccuringTask.Start();
 
-				var iWeatherRecordRepository = serviceProvider.GetRequiredService<IWeatherRecordRepository>();
+				Console.WriteLine("Press any key to stop the task");
+				Console.ReadKey();
 
-				if (weatherRecords.Count == 1)
-				{
-					await iWeatherRecordRepository.AddAsync(weatherRecords.Single());
-					
-				}
-				else if (weatherRecords.Count > 1)
-				{
-					await iWeatherRecordRepository.AddRangeAsync(weatherRecords);
-				}			
+				await myReccuringTask.StopAsync();			
 			}
 			catch (Exception ex)
 			{
@@ -78,7 +66,7 @@ namespace WeatherForecaster.ConsoleUI
 
 			services.AddDbContext<WeatherForecasterDbContext>(options => options.UseSqlServer(connectionString));
 
-			services.AddTransient<IWeatherForecastApiService, WeatherForecastApiService>(); //Or singleton?
+			services.AddTransient<IWeatherForecastApiService, WeatherForecastApiService>();
 			services.AddTransient<IWeatherRecordRepository, WeatherRecordRepository>();
 
 			var serviceProvider = services.BuildServiceProvider();
@@ -107,15 +95,6 @@ namespace WeatherForecaster.ConsoleUI
 			}
 
 			return true;
-		}
-
-		private static void PrintOutWeatherForecast(WeatherRecordDto weatherRecordDto)
-		{
-			Console.WriteLine("\nCity: " + weatherRecordDto.City);
-			Console.WriteLine("Temperature: " + weatherRecordDto.Temperature);
-			Console.WriteLine("Precipitation: " + weatherRecordDto.Precipitation);
-			Console.WriteLine("WindSpeed: " + weatherRecordDto.WindSpeed);
-			Console.WriteLine("Summary: " + weatherRecordDto.Summary);
 		}
 	}
 }
