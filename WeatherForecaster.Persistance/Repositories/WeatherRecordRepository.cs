@@ -13,7 +13,7 @@ namespace WeatherForecaster.Persistance.Repositories
 			_db = db;
 		}
 
-		public async Task Add(WeatherRecordDto weatherRecord)
+		public async Task AddAsync(WeatherRecordDto weatherRecord)
 		{
 			var weatherRecordEntity = new WeatherRecordEntity()
 			{
@@ -29,7 +29,7 @@ namespace WeatherForecaster.Persistance.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public async Task AddRange(IEnumerable<WeatherRecordDto> weatherRecords)
+		public async Task AddRangeAsync(IEnumerable<WeatherRecordDto> weatherRecords)
 		{
 			var weatherRecordEntities = weatherRecords.Select(item => new WeatherRecordEntity()
 			{

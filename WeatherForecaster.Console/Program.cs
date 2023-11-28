@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WeatherForecaster.SharedConfig;
 using Microsoft.Extensions.Configuration;
 using WeatherForecaster.Domain.Services;
+using WeatherForecaster.Persistance.Repositories;
 
 namespace WeatherForecaster.ConsoleUI
 {
@@ -37,11 +38,26 @@ namespace WeatherForecaster.ConsoleUI
 					Environment.Exit(1);
 				}
 
+				var weatherRecords = new List<WeatherRecordDto>();
+
 				foreach (var arg in args)
 				{
 					WeatherRecordDto weatherRecordDto = await iWeatherForecastApiService.GetWeatherRecordAsync(arg);
+					weatherRecords.Add(weatherRecordDto);
 					PrintOutWeatherForecast(weatherRecordDto);
 				}
+
+				var iWeatherRecordRepository = serviceProvider.GetRequiredService<IWeatherRecordRepository>();
+
+				if (weatherRecords.Count == 1)
+				{
+					await iWeatherRecordRepository.AddAsync(weatherRecords.Single());
+					
+				}
+				else if (weatherRecords.Count > 1)
+				{
+					await iWeatherRecordRepository.AddRangeAsync(weatherRecords);
+				}			
 			}
 			catch (Exception ex)
 			{
@@ -63,6 +79,7 @@ namespace WeatherForecaster.ConsoleUI
 			services.AddDbContext<WeatherForecasterDbContext>(options => options.UseSqlServer(connectionString));
 
 			services.AddTransient<IWeatherForecastApiService, WeatherForecastApiService>(); //Or singleton?
+			services.AddTransient<IWeatherRecordRepository, WeatherRecordRepository>();
 
 			var serviceProvider = services.BuildServiceProvider();
 

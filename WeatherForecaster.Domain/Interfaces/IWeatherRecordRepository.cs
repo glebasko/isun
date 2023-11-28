@@ -4,7 +4,7 @@ namespace WeatherForecaster.Domain.Interfaces
 {
 	public interface IWeatherRecordRepository
 	{
-		public Task Add(WeatherRecordDto weatherRecord);
-		public Task AddRange(IEnumerable<WeatherRecordDto> weatherRecords);
+		public Task AddAsync(WeatherRecordDto weatherRecord);
+		public Task AddRangeAsync(IEnumerable<WeatherRecordDto> weatherRecords);
 	}
 }
