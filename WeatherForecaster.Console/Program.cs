@@ -5,6 +5,7 @@ using WeatherForecaster.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeatherForecaster.Domain;
 
 namespace WeatherForecaster.ConsoleUI
 {
@@ -55,12 +56,10 @@ namespace WeatherForecaster.ConsoleUI
 		{
 			var services = new ServiceCollection();
 
-			IConfiguration configuration = new ConfigurationBuilder()
-				.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-				.Build();
+			IConfiguration configuration = ConfigurationHelper.BuildConfiguration();
 
-			string connectionString = configuration.GetConnectionString("TestDatabaseConnection");
+			string connectionString = configuration.GetConnectionString("TestDatabaseConnection") 
+				?? throw new InvalidOperationException("Connection string 'TestDatabaseConnection' not found.");
 
 			services.AddDbContext<WeatherForecasterDbContext>(options => options.UseSqlServer(connectionString));
 
