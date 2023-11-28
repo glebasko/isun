@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using WeatherForecaster.Persistance;
+using WeatherForecaster.SharedConfig;
 
-namespace WeatherForecaster.SharedConfig
+namespace WeatherForecaster.Persistance
 {
 	// this class is required for the EF scaffolder to pick up the correct dbcontextoptions and create migrations
 	public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<WeatherForecasterDbContext>
