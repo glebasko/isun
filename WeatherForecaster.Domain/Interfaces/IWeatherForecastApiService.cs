@@ -1,6 +1,6 @@
-﻿using isun.Domain.DTO;
+﻿using WeatherForecaster.Domain.DTO;
 
-namespace isun.Domain.Interfaces
+namespace WeatherForecaster.Domain.Interfaces
 {
 	public interface IWeatherForecastApiService
 	{

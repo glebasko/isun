@@ -1,4 +1,4 @@
-﻿namespace isun.Domain.DTO
+﻿namespace WeatherForecaster.Domain.DTO
 {
 	public class AuthorizationTokenDto
 	{

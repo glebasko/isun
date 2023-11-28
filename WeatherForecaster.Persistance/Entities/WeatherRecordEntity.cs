@@ -1,6 +1,6 @@
-﻿namespace isun.Persistance.Entities
+﻿namespace WeatherForecaster.Persistance.Entities
 {
-	public class WeatherRecord
+	public class WeatherRecordEntity
 	{
 		public int Id {  get; set; }
 		public string City { get; set; }
@@ -8,7 +8,6 @@
 		public ushort Precipitation { get; set; }
 		public ushort WindSpeed { get; set; }
 		public string Summary { get; set; }
-
         public DateTime CreatedOn { get; set; }
     }
 }

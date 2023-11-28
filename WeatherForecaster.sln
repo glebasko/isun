@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "isun.Console", "isun\isun.Console.csproj", "{DCD9A53B-63F2-4244-B7AE-3EFA17380A2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.Persistance", "WeatherForecaster.Persistance\WeatherForecaster.Persistance.csproj", "{9155D631-4810-45AB-A92F-6F7168FEADB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "isun.Persistance", "isun.Persistance\isun.Persistance.csproj", "{9155D631-4810-45AB-A92F-6F7168FEADB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.Domain", "WeatherForecaster.Domain\WeatherForecaster.Domain.csproj", "{AEA21C14-3CC1-4322-934C-0382BB084D76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "isun.Domain", "isun.Domain\isun.Domain.csproj", "{AEA21C14-3CC1-4322-934C-0382BB084D76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.ConsoleUI", "WeatherForecaster.Console\WeatherForecaster.ConsoleUI.csproj", "{7F860129-7473-45FF-91B2-7419B4853E60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DCD9A53B-63F2-4244-B7AE-3EFA17380A2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCD9A53B-63F2-4244-B7AE-3EFA17380A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCD9A53B-63F2-4244-B7AE-3EFA17380A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCD9A53B-63F2-4244-B7AE-3EFA17380A2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9155D631-4810-45AB-A92F-6F7168FEADB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9155D631-4810-45AB-A92F-6F7168FEADB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9155D631-4810-45AB-A92F-6F7168FEADB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{AEA21C14-3CC1-4322-934C-0382BB084D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEA21C14-3CC1-4322-934C-0382BB084D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEA21C14-3CC1-4322-934C-0382BB084D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F860129-7473-45FF-91B2-7419B4853E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F860129-7473-45FF-91B2-7419B4853E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F860129-7473-45FF-91B2-7419B4853E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F860129-7473-45FF-91B2-7419B4853E60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

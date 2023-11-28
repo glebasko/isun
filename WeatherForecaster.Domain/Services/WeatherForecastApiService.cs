@@ -1,9 +1,9 @@
-﻿using isun.Domain.DTO;
-using isun.Domain.Interfaces;
+﻿using WeatherForecaster.Domain.DTO;
+using WeatherForecaster.Domain.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace isun.Domain.Services
+namespace WeatherForecaster.Domain.Services
 {
 	public class WeatherForecastApiService : IWeatherForecastApiService
 	{
