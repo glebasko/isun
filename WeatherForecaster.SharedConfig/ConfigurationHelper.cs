@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace WeatherForecaster.Domain
+namespace WeatherForecaster.SharedConfig
 {
 	public class ConfigurationHelper
 	{

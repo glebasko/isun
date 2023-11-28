@@ -1,11 +1,9 @@
 ﻿using WeatherForecaster.Domain.DTO;
 using WeatherForecaster.Domain.Interfaces;
-using WeatherForecaster.Domain.Services;
 using WeatherForecaster.Persistance;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WeatherForecaster.Domain;
+using WeatherForecaster.SharedConfig;
 
 namespace WeatherForecaster.ConsoleUI
 {
@@ -23,7 +21,7 @@ namespace WeatherForecaster.ConsoleUI
 					Environment.Exit(1);
 				}
 
-				var serviceProvider = RegisterDependencies();
+				var serviceProvider = DIContainerHelper.RegisterDependencies();
 
 				var db = serviceProvider.GetRequiredService<WeatherForecasterDbContext>();
 
@@ -50,24 +48,6 @@ namespace WeatherForecaster.ConsoleUI
 				Console.WriteLine("\nError occured: ");
 				Console.WriteLine(ex.ToString());
 			}
-		}
-
-		private static ServiceProvider RegisterDependencies()
-		{
-			var services = new ServiceCollection();
-
-			IConfiguration configuration = ConfigurationHelper.BuildConfiguration();
-
-			string connectionString = configuration.GetConnectionString("TestDatabaseConnection") 
-				?? throw new InvalidOperationException("Connection string 'TestDatabaseConnection' not found.");
-
-			services.AddDbContext<WeatherForecasterDbContext>(options => options.UseSqlServer(connectionString));
-
-			services.AddTransient<IWeatherForecastApiService, WeatherForecastApiService>(); //Or singleton?
-
-			var serviceProvider = services.BuildServiceProvider();
-
-			return serviceProvider;
 		}
 
 		private static async Task<bool> ValidateIfArgsAreValidCities(IWeatherForecastApiService weatherForecastApiService, string[] args)

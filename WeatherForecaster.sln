@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.ConsoleUI", "WeatherForecaster.Console\WeatherForecaster.ConsoleUI.csproj", "{7F860129-7473-45FF-91B2-7419B4853E60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherForecaster.SharedConfig", "WeatherForecaster.SharedConfig\WeatherForecaster.SharedConfig.csproj", "{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7F860129-7473-45FF-91B2-7419B4853E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F860129-7473-45FF-91B2-7419B4853E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F860129-7473-45FF-91B2-7419B4853E60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
