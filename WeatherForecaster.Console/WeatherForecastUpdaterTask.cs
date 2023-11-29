@@ -50,7 +50,6 @@ namespace WeatherForecaster.Domain.Services
 			{
 				while (await _timer.WaitForNextTickAsync(_cts.Token))
 				{
-					//Console.WriteLine(DateTime.Now.ToString("ss.fff"));
 					foreach (var city in _cities)
 					{
 						var weatherRecordDto = await _weatherForecastApiService.GetWeatherRecordAsync(city);

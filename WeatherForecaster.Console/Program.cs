@@ -6,6 +6,7 @@ using WeatherForecaster.SharedConfig;
 using Microsoft.Extensions.Configuration;
 using WeatherForecaster.Domain.Services;
 using WeatherForecaster.Persistance.Repositories;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WeatherForecaster.ConsoleUI
 {
@@ -17,29 +18,37 @@ namespace WeatherForecaster.ConsoleUI
 			{
 				Console.WriteLine("Starting the application..");
 
+				var serviceProvider = RegisterDependencies();
+				var weatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
+
+				var apiCities = await weatherForecastApiService.GetCitiesAsync();
+
 				if (args.Length == 0)
 				{
-					Console.WriteLine("\nNo command-line arguments provided."); //TODO: display the list of cities available
+					Console.WriteLine("\nNo cities were provided as arguments.");
+					PrintOutCities(apiCities);
+
 					Environment.Exit(1);
 				}
 
-				var serviceProvider = RegisterDependencies();
-
 				var db = serviceProvider.GetRequiredService<WeatherForecasterDbContext>();
-
 				await DbInitializer.InitializeDbAsync(db);
 
-				var weatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
-
-				if (!await ValidateIfArgsAreValidCities(weatherForecastApiService, args))
+				if (!ValidateIfArgsAreValidCities(args, apiCities))
 				{
-					Console.WriteLine("\nPlease run the application with the cities from the list above. Terminating the application..");
+					Console.WriteLine("\nPlease run the application with the cities from the list above.");
+					Console.WriteLine("Terminating application..");
 					Environment.Exit(1);
 				}
 
 				var weatherRecordRepository = serviceProvider.GetRequiredService<IWeatherRecordRepository>();
+				var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-				var myReccuringTask = new WeatherForecastUpdaterTask(weatherForecastApiService, weatherRecordRepository, TimeSpan.FromSeconds(15), args); //TODO: get interval from config
+				string strInterval = configuration.GetRequiredSection("WeatherForecastUpdaterTaskIntervalInSec").Value
+					?? throw new InvalidOperationException("Congifuration section 'WeatherForecastUpdaterTaskIntervalInSec' not found.");
+				int interval = int.Parse(strInterval);
+
+				var myReccuringTask = new WeatherForecastUpdaterTask(weatherForecastApiService, weatherRecordRepository, TimeSpan.FromSeconds(interval), args);
 				myReccuringTask.Start();
 
 				Console.WriteLine("Press any key to stop the task");
@@ -61,6 +70,8 @@ namespace WeatherForecaster.ConsoleUI
 
 			IConfiguration configuration = ConfigurationHelper.BuildConfiguration();
 
+			services.AddSingleton(configuration);
+
 			string connectionString = configuration.GetConnectionString("TestDatabaseConnection")
 				?? throw new InvalidOperationException("Connection string 'TestDatabaseConnection' not found.");
 
@@ -74,27 +85,35 @@ namespace WeatherForecaster.ConsoleUI
 			return serviceProvider;
 		}
 
-		private static async Task<bool> ValidateIfArgsAreValidCities(IWeatherForecastApiService weatherForecastApiService, string[] args)
+		private static bool ValidateIfArgsAreValidCities(string[] args, IEnumerable<string> apiCities)
 		{
-			var apiCities = await weatherForecastApiService.GetCitiesAsync();
-
 			foreach (var arg in args)
 			{
 				if (!apiCities.Contains(arg))
 				{
 					Console.WriteLine($"\nThere is no weather forecast available for city \"{arg}\".");
-					Console.WriteLine("Available cities are: \n");
-
-					foreach (var apiCity in apiCities)
-					{
-						Console.WriteLine(apiCity);
-					}
+					PrintOutCities(apiCities);
 
 					return false;
 				}
 			}
 
 			return true;
+		}
+
+		private static void PrintOutCities (IEnumerable<string> cities)
+		{
+			if (cities.IsNullOrEmpty())
+			{
+				return;
+			}
+
+			Console.WriteLine("Available cities are: \n");
+
+			foreach (var city in cities)
+			{
+				Console.WriteLine(city);
+			}
 		}
 	}
 }
