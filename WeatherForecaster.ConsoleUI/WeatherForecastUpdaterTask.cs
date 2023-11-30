@@ -12,7 +12,6 @@ namespace WeatherForecaster.Domain.Services
 		private readonly IWeatherForecastApiService _weatherForecastApiService;
 		private readonly IWeatherRecordRepository _weatherRecordRepository;
 		private readonly string[] _cities;
-		private readonly List<WeatherRecordDto> _weatherRecordDtos = new();
 
 		public WeatherForecastUpdaterTask(IWeatherForecastApiService weatherForecastApiService, IWeatherRecordRepository weatherRecordRepository, TimeSpan interval, string[] cities)
 		{
@@ -36,17 +35,7 @@ namespace WeatherForecaster.Domain.Services
 
 			_cts.Cancel();
 			await _timerTask;
-
-			await SaveEntitiesToDb();
-
 			_cts.Dispose();
-
-			Console.WriteLine("\nTask was cancelled");
-		}
-
-		private async Task SaveEntitiesToDb()
-		{
-			await _weatherRecordRepository.AddRangeAsync(_weatherRecordDtos);
 		}
 
 		private async Task DoWorkAsync()
@@ -58,7 +47,9 @@ namespace WeatherForecaster.Domain.Services
 					foreach (var city in _cities)
 					{
 						var weatherRecordDto = await _weatherForecastApiService.GetWeatherRecordAsync(city);
-						_weatherRecordDtos.Add(weatherRecordDto);
+
+						await _weatherRecordRepository.AddAsync(weatherRecordDto);
+
 						PrintOutWeatherForecast(weatherRecordDto);
 					}
 				}
