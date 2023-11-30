@@ -19,7 +19,7 @@ namespace WeatherForecaster.Domain.Services
 				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:BaseUrl' not found.");
 
 			_httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(baseUrl); //TODO: move to config file
+            _httpClient.BaseAddress = new Uri(baseUrl);
 
             AuthorizeHttpClient().Wait();
         }
@@ -66,17 +66,18 @@ namespace WeatherForecaster.Domain.Services
 
 		private async Task AuthorizeHttpClient()
 		{
-			//TODO: move to config file
+			string endpointUrl = _configuration["ApiSettings:Authorization:EndpointUrl"]
+				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Endpoints:Authorize' not found.");
+
 			var parameters = new
 			{
-				Username = "isun",
-				Password = "passwrod"
+				Username = _configuration["ApiSettings:Authorization:Usr"]
+					?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Authorization:Usr' not found."),
+				Password = _configuration["ApiSettings:Authorization:Pwd"]
+					?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Authorization:Pwd' not found.")
 			};
 
 			string jsonParameters = JsonConvert.SerializeObject(parameters);
-
-			string endpointUrl = _configuration["ApiSettings:Endpoints:Authorize"]
-				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Endpoints:Authorize' not found.");
 
 			var response = await _httpClient.PostAsync(endpointUrl, new StringContent(jsonParameters, Encoding.UTF8, "application/json"));
 

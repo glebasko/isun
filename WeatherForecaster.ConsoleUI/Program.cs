@@ -77,10 +77,8 @@ namespace WeatherForecaster.ConsoleUI
 			var services = new ServiceCollection();
 
 			IConfiguration configuration = ConfigurationHelper.BuildConfiguration();
-
 			services.AddSingleton(configuration);
 
-			//services.AddSingleton(x => Log.Logger);
 			services.AddLogging(loggingBuilder =>
 			{
 				loggingBuilder.AddSerilog();
