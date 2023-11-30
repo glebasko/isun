@@ -2,25 +2,35 @@
 using WeatherForecaster.Domain.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace WeatherForecaster.Domain.Services
 {
 	public class WeatherForecastApiService : IWeatherForecastApiService
 	{
-        private readonly HttpClient _httpClient;
+		private readonly IConfiguration _configuration;
+		private readonly HttpClient _httpClient;
 
-        public WeatherForecastApiService() 
+		public WeatherForecastApiService(IConfiguration configuration) 
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://weather-api.isun.ch/api/"); //TODO: move to config file
+			_configuration = configuration;
+
+			string baseUrl = _configuration["ApiSettings:BaseUrl"] 
+				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:BaseUrl' not found.");
+
+			_httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri(baseUrl); //TODO: move to config file
 
             AuthorizeHttpClient().Wait();
         }
 
         //TODO: refactor returns
 		public async Task<IEnumerable<string>> GetCitiesAsync()
-		{       
-            var response = await _httpClient.GetAsync("cities");
+		{
+			string endpointUrl = _configuration["ApiSettings:Endpoints:Cities"]
+				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Endpoints:Cities' not found.");
+
+			var response = await _httpClient.GetAsync(endpointUrl);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -36,7 +46,10 @@ namespace WeatherForecaster.Domain.Services
 
 		public async Task<WeatherRecordDto> GetWeatherRecordAsync(string city)
 		{
-            var response = await _httpClient.GetAsync("weathers/" + city);
+			string endpointUrl = _configuration["ApiSettings:Endpoints:Weathers"]
+				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Endpoints:Weathers' not found.");
+
+			var response = await _httpClient.GetAsync(endpointUrl + "/" + city);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -62,11 +75,14 @@ namespace WeatherForecaster.Domain.Services
 
 			string jsonParameters = JsonConvert.SerializeObject(parameters);
 
-			var response = await _httpClient.PostAsync("authorize", new StringContent(jsonParameters, Encoding.UTF8, "application/json"));
+			string endpointUrl = _configuration["ApiSettings:Endpoints:Authorize"]
+				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Endpoints:Authorize' not found.");
+
+			var response = await _httpClient.PostAsync(endpointUrl, new StringContent(jsonParameters, Encoding.UTF8, "application/json"));
 
 			if (!response.IsSuccessStatusCode || response.Content is null)
 			{
-				return;
+				return; //TODO: throw ex
 			}
 
 			string jsonString = await response.Content.ReadAsStringAsync();
