@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace WeatherForecaster.SharedConfig
 {
@@ -12,6 +13,15 @@ namespace WeatherForecaster.SharedConfig
 				.Build();
 
 			return configuration;
+		}
+
+		public static void ConfigureSerilog()
+		{
+			var configuration = BuildConfiguration();
+
+			Log.Logger = new LoggerConfiguration()
+			 .ReadFrom.Configuration(configuration)
+			 .CreateLogger();
 		}
 	}
 }

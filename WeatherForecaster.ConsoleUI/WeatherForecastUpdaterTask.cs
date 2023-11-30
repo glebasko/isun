@@ -27,7 +27,7 @@ namespace WeatherForecaster.Domain.Services
 			_timerTask = DoWorkAsync();
 		}
 
-		public async Task StopAsync()
+		public async Task StopAndSaveToDbAsync()
 		{
 			if (_timerTask is null)
 			{
@@ -37,11 +37,16 @@ namespace WeatherForecaster.Domain.Services
 			_cts.Cancel();
 			await _timerTask;
 
-			await _weatherRecordRepository.AddRangeAsync(_weatherRecordDtos);
+			await SaveEntitiesToDb();
 
 			_cts.Dispose();
 
 			Console.WriteLine("\nTask was cancelled");
+		}
+
+		private async Task SaveEntitiesToDb()
+		{
+			await _weatherRecordRepository.AddRangeAsync(_weatherRecordDtos);
 		}
 
 		private async Task DoWorkAsync()
@@ -57,7 +62,8 @@ namespace WeatherForecaster.Domain.Services
 						PrintOutWeatherForecast(weatherRecordDto);
 					}
 				}
-			} catch (OperationCanceledException) { }
+			} 
+			catch (OperationCanceledException) { }
 		}
 
 		private static void PrintOutWeatherForecast(WeatherRecordDto weatherRecordDto)
