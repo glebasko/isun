@@ -11,17 +11,12 @@ namespace WeatherForecaster.Domain.Services
 		private readonly IConfiguration _configuration;
 		private readonly HttpClient _httpClient;
 
-		public WeatherForecastApiService(IConfiguration configuration) 
+		public WeatherForecastApiService(IConfiguration configuration, HttpClient httpClient) 
         {
 			_configuration = configuration;
+			_httpClient = httpClient;
 
-			string baseUrl = _configuration["ApiSettings:BaseUrl"] 
-				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:BaseUrl' not found.");
-
-			_httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(baseUrl);
-
-            AuthorizeHttpClient().Wait();
+			AuthorizeHttpClient().Wait();
         }
 
 		public async Task<IEnumerable<string>> GetCitiesAsync()

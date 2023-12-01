@@ -88,9 +88,16 @@ namespace WeatherForecaster.ConsoleUI
 			string connectionString = configuration.GetConnectionString("TestDatabaseConnection")
 				?? throw new InvalidOperationException("Connection string 'TestDatabaseConnection' not found.");
 
+			string baseApiUrl = configuration["ApiSettings:BaseUrl"]
+				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:BaseUrl' not found.");
+
 			services.AddDbContext<WeatherForecasterDbContext>(options => options.UseSqlServer(connectionString));
 
-			services.AddTransient<IWeatherForecastApiService, WeatherForecastApiService>();
+			services.AddHttpClient<IWeatherForecastApiService, WeatherForecastApiService>(client =>
+				{
+					client.BaseAddress = new Uri(baseApiUrl);
+				});
+
 			services.AddTransient<IWeatherRecordRepository, WeatherRecordRepository>();
 
 			var serviceProvider = services.BuildServiceProvider();
