@@ -26,8 +26,6 @@ namespace WeatherForecaster.ConsoleUI
 
 				var apiCities = await weatherForecastApiService.GetCitiesAsync();
 
-				//Log.Logger.Debug("Debug: testing logger using Log.Logger");
-
 				if (args.Length == 0)
 				{
 					Console.WriteLine("\nNo cities were provided as arguments. Please restart application with the cities from the list below.");
@@ -40,7 +38,10 @@ namespace WeatherForecaster.ConsoleUI
 				var db = serviceProvider.GetRequiredService<WeatherForecasterDbContext>();
 				await DbInitializer.InitializeDbAsync(db);
 
-				if (!ValidateIfArgsAreValidCities(args, apiCities))
+				// eliminate dublicates
+				string[] uniqueArgs = args.Distinct().ToArray();
+
+				if (!ValidateIfArgsAreValidCities(uniqueArgs, apiCities))
 				{
 					Console.WriteLine("\nPlease run the application with the cities from the list above.");
 					Console.WriteLine("Exiting the application..");
@@ -54,7 +55,7 @@ namespace WeatherForecaster.ConsoleUI
 					?? throw new InvalidOperationException("Congifuration section 'WeatherForecastUpdaterTaskIntervalInSec' not found.");
 				int interval = int.Parse(strInterval);
 
-				var myReccuringTask = new WeatherForecastUpdaterTask(weatherForecastApiService, weatherRecordRepository, TimeSpan.FromSeconds(interval), args);
+				var myReccuringTask = new WeatherForecastUpdaterTask(weatherForecastApiService, weatherRecordRepository, TimeSpan.FromSeconds(interval), uniqueArgs);
 				myReccuringTask.Start();
 
 				Console.WriteLine("Press any key to stop the application");

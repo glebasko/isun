@@ -34,7 +34,8 @@ namespace WeatherForecaster.Domain.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                return null;
+				//TODO: throw ex
+				return null; 
             }
 
             string jsonString = await response.Content.ReadAsStringAsync();
@@ -83,7 +84,8 @@ namespace WeatherForecaster.Domain.Services
 
 			if (!response.IsSuccessStatusCode || response.Content is null)
 			{
-				return; //TODO: throw ex
+				//TODO: throw ex
+				return; 
 			}
 
 			string jsonString = await response.Content.ReadAsStringAsync();
