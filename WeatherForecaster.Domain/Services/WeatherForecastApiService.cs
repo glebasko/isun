@@ -24,25 +24,30 @@ namespace WeatherForecaster.Domain.Services
             AuthorizeHttpClient().Wait();
         }
 
-        //TODO: refactor returns
 		public async Task<IEnumerable<string>> GetCitiesAsync()
 		{
 			string endpointUrl = _configuration["ApiSettings:Endpoints:Cities"]
 				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Endpoints:Cities' not found.");
 
 			var response = await _httpClient.GetAsync(endpointUrl);
-
             if (!response.IsSuccessStatusCode)
             {
-				//TODO: throw ex
-				return null; 
-            }
+				throw new HttpRequestException($"API request to {_httpClient.BaseAddress + endpointUrl} failed. Status code: {response.StatusCode}");
+			}
 
-            string jsonString = await response.Content.ReadAsStringAsync();
+            string jsonString = await response.Content.ReadAsStringAsync();		
+			if (string.IsNullOrEmpty(jsonString))
+			{
+				throw new InvalidOperationException($"API {_httpClient.BaseAddress + endpointUrl} response content is empty or null.");
+			}
 
-            var cities = System.Text.Json.JsonSerializer.Deserialize<string[]>(jsonString);
+			var cities = System.Text.Json.JsonSerializer.Deserialize<string[]>(jsonString);
+			if (cities is null)
+			{
+				throw new InvalidOperationException($"Failed to deserialize API {_httpClient.BaseAddress + endpointUrl} response.");
+			}
 
-            return cities;
+			return cities;
 		}
 
 		public async Task<WeatherRecordDto> GetWeatherRecordAsync(string city)
@@ -51,18 +56,24 @@ namespace WeatherForecaster.Domain.Services
 				?? throw new InvalidOperationException("Congifuration key 'ApiSettings:Endpoints:Weathers' not found.");
 
 			var response = await _httpClient.GetAsync(endpointUrl + "/" + city);
-
             if (!response.IsSuccessStatusCode)
             {
-                // TODO: return more details
-                return null;
-            }
+				throw new HttpRequestException($"API request to {_httpClient.BaseAddress + endpointUrl} failed. Status code: {response.StatusCode}");
+			}
 
             string jsonString = await response.Content.ReadAsStringAsync();
+			if (string.IsNullOrEmpty(jsonString))
+			{
+				throw new InvalidOperationException($"API {_httpClient.BaseAddress + endpointUrl} response content is empty or null.");
+			}
 
-            var weatherRecordDto = JsonConvert.DeserializeObject<WeatherRecordDto>(jsonString);
+			var weatherRecordDto = JsonConvert.DeserializeObject<WeatherRecordDto>(jsonString);
+			if (weatherRecordDto is null)
+			{
+				throw new InvalidOperationException($"Failed to deserialize API {_httpClient.BaseAddress + endpointUrl} response.");
+			}
 
-            return weatherRecordDto;
+			return weatherRecordDto;
         }
 
 		private async Task AuthorizeHttpClient()
@@ -81,16 +92,22 @@ namespace WeatherForecaster.Domain.Services
 			string jsonParameters = JsonConvert.SerializeObject(parameters);
 
 			var response = await _httpClient.PostAsync(endpointUrl, new StringContent(jsonParameters, Encoding.UTF8, "application/json"));
-
-			if (!response.IsSuccessStatusCode || response.Content is null)
+			if (!response.IsSuccessStatusCode)
 			{
-				//TODO: throw ex
-				return; 
+				throw new HttpRequestException($"API request to {_httpClient.BaseAddress + endpointUrl} failed. Status code: {response.StatusCode}");
 			}
 
 			string jsonString = await response.Content.ReadAsStringAsync();
+			if (string.IsNullOrEmpty(jsonString))
+			{
+				throw new InvalidOperationException($"API {_httpClient.BaseAddress + endpointUrl} response content is empty or null.");
+			}
 
 			var authorizationTokenDto = JsonConvert.DeserializeObject<AuthorizationTokenDto>(jsonString);
+			if (authorizationTokenDto is null)
+			{
+				throw new InvalidOperationException($"Failed to deserialize API {_httpClient.BaseAddress + endpointUrl} response.");
+			}
 
 			_httpClient.DefaultRequestHeaders.Add("Authorization", authorizationTokenDto.Token);
 		}
