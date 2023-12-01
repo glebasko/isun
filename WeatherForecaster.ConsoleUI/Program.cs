@@ -2,7 +2,7 @@
 using WeatherForecaster.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using WeatherForecaster.SharedConfig;
+using WeatherForecaster.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using WeatherForecaster.Domain.Services;
 using WeatherForecaster.Persistance.Repositories;

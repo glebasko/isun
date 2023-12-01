@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WeatherForecaster.Domain\WeatherForecaster.Domain.csproj" />
-    <ProjectReference Include="..\WeatherForecaster.SharedConfig\WeatherForecaster.SharedConfig.csproj" />
+    <ProjectReference Include="..\WeatherForecaster.Infrastructure\WeatherForecaster.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

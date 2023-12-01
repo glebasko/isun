@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.Persistan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.Domain", "WeatherForecaster.Domain\WeatherForecaster.Domain.csproj", "{AEA21C14-3CC1-4322-934C-0382BB084D76}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.SharedConfig", "WeatherForecaster.SharedConfig\WeatherForecaster.SharedConfig.csproj", "{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.ConsoleUI", "WeatherForecaster.ConsoleUI\WeatherForecaster.ConsoleUI.csproj", "{105C259B-D43E-429C-93E0-B04F7E6E625D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecaster.Infrastructure", "WeatherForecaster.Infrastructure\WeatherForecaster.Infrastructure.csproj", "{FEDD26F6-7BC5-44DB-B94F-731C4CD2FD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{AEA21C14-3CC1-4322-934C-0382BB084D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEA21C14-3CC1-4322-934C-0382BB084D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEA21C14-3CC1-4322-934C-0382BB084D76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F7C3BB7-0E05-480A-A04E-C512325BEE0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{105C259B-D43E-429C-93E0-B04F7E6E625D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{105C259B-D43E-429C-93E0-B04F7E6E625D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{105C259B-D43E-429C-93E0-B04F7E6E625D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{105C259B-D43E-429C-93E0-B04F7E6E625D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEDD26F6-7BC5-44DB-B94F-731C4CD2FD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEDD26F6-7BC5-44DB-B94F-731C4CD2FD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEDD26F6-7BC5-44DB-B94F-731C4CD2FD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEDD26F6-7BC5-44DB-B94F-731C4CD2FD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace WeatherForecaster.SharedConfig
+namespace WeatherForecaster.Infrastructure
 {
 	public class ConfigurationHelper
 	{
