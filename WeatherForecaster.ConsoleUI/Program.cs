@@ -63,7 +63,7 @@ namespace WeatherForecaster.ConsoleUI
 				Console.WriteLine("Press any key to stop the application");
 				Console.ReadKey();
 
-				await myReccuringTask.StopAndSaveToDbAsync();			
+				await myReccuringTask.StopAsync();			
 			}
 			catch (Exception ex)
 			{

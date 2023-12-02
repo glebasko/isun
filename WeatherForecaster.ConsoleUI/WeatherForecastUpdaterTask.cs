@@ -26,7 +26,7 @@ namespace WeatherForecaster.Domain.Services
 			_timerTask = DoWorkAsync();
 		}
 
-		public async Task StopAndSaveToDbAsync()
+		public async Task StopAsync()
 		{
 			if (_timerTask is null)
 			{
