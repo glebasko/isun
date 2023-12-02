@@ -2,7 +2,7 @@
   "profiles": {
     "WeatherForecaster": {
       "commandName": "Project",
-      "commandLineArgs": "Vilnius Vilnius Kaunas"
+      "commandLineArgs": "Vilnius Vilnius Kaunas Klaipeda"
     }
   }
 }

@@ -49,6 +49,7 @@ namespace WeatherForecaster.IntegrationTests.Domain
 
 			Assert.NotNull(weatherRecordDto);
 			Assert.Equal(city, weatherRecordDto.City);
+			Assert.NotEmpty(weatherRecordDto.Summary);
 		}
 
 		[Theory]
