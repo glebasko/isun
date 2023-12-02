@@ -8,6 +8,7 @@ using WeatherForecaster.Domain.Services;
 using WeatherForecaster.Persistance.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 namespace WeatherForecaster.ConsoleUI
 {
@@ -15,12 +16,13 @@ namespace WeatherForecaster.ConsoleUI
 	{
 		static async Task Main(string[] args)
 		{
+			ConfigurationHelper.ConfigureSerilog();
+
 			try
-			{
+			{	
 				Console.WriteLine("Starting the application..");
-
-				ConfigurationHelper.ConfigureSerilog();
-
+				Console.OutputEncoding = Encoding.UTF8;
+				
 				var serviceProvider = RegisterDependencies();
 				var weatherForecastApiService = serviceProvider.GetRequiredService<IWeatherForecastApiService>();
 
