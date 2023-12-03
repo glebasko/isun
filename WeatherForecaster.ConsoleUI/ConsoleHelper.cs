@@ -14,24 +14,25 @@ namespace WeatherForecaster.ConsoleUI
 	public static class ConsoleHelper
 	{
 		// TODO: write tests for this method
-		public static string[] ValidateArgs(string[] cmdArgs, IEnumerable<string> apiCities)
+		public static bool ProcessAndValidateCmdArgs(string[] cmdArgs, IEnumerable<string> apiCities, out string[] outputArgs)
 		{
+			outputArgs = null;
+
 			if (cmdArgs.Length == 0)
 			{
 				Console.WriteLine("\nNo cities were provided as arguments. Please restart application with the cities from the list below.");
 				PrintOutCities(apiCities);
-
-				Console.WriteLine("\nExiting the application..");
-				Environment.Exit(1);
+					
+				return false;
 			}
 
 			// eliminate commas 
 			string[] argsWithoutCommas = cmdArgs.Select(s => s.Replace(",", "")).ToArray();
 
 			// eliminate dublicates
-			string[] uniqueArgs = argsWithoutCommas.Distinct().ToArray();
+			outputArgs = argsWithoutCommas.Distinct().ToArray();
 
-			foreach (var arg in uniqueArgs)
+			foreach (var arg in outputArgs)
 			{
 				if (!apiCities.Contains(arg))
 				{
@@ -40,13 +41,12 @@ namespace WeatherForecaster.ConsoleUI
 					PrintOutCities(apiCities);
 
 					Console.WriteLine("\nPlease run the application with the cities from the list above.");
-					Console.WriteLine("Exiting the application..");
 
-					Environment.Exit(1);
+					return false;
 				}
 			}
 
-			return uniqueArgs;
+			return true;
 		}
 
 		public static ServiceProvider RegisterDependencies()

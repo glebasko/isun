@@ -26,7 +26,11 @@ namespace WeatherForecaster.ConsoleUI
 
 				var apiCities = await weatherForecastApiService.GetCitiesAsync();
 
-				string[] uniqueArgs = ConsoleHelper.ValidateArgs(args, apiCities);
+				if (!ConsoleHelper.ProcessAndValidateCmdArgs(args, apiCities, out string[] processedArgs))
+				{
+					Console.WriteLine("\nExiting the application..");
+					Environment.Exit(1);
+				}
 
 				var db = serviceProvider.GetRequiredService<WeatherForecasterDbContext>();
 				await DbInitializer.InitializeDbAsync(db);
@@ -38,7 +42,7 @@ namespace WeatherForecaster.ConsoleUI
 					?? throw new InvalidOperationException("Congifuration section 'WeatherForecastUpdaterTaskIntervalInSec' not found.");
 				int interval = int.Parse(strInterval);
 
-				weatherForecastUpdaterJob = new WeatherForecastUpdaterJob(weatherForecastApiService, weatherRecordRepository, TimeSpan.FromSeconds(interval), uniqueArgs);
+				weatherForecastUpdaterJob = new WeatherForecastUpdaterJob(weatherForecastApiService, weatherRecordRepository, TimeSpan.FromSeconds(interval), processedArgs);
 
 				var jobTask = weatherForecastUpdaterJob.StartAsync();
 
