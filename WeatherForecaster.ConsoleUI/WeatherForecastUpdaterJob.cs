@@ -3,7 +3,7 @@ using WeatherForecaster.Domain.Interfaces;
 
 namespace WeatherForecaster.Domain.Services
 {
-	public class WeatherForecastUpdaterTask
+	public class WeatherForecastUpdaterJob
 	{
 		private Task? _timerTask;
 		private readonly PeriodicTimer _timer;
@@ -13,7 +13,7 @@ namespace WeatherForecaster.Domain.Services
 		private readonly IWeatherRecordRepository _weatherRecordRepository;
 		private readonly string[] _cities;
 
-		public WeatherForecastUpdaterTask(IWeatherForecastApiService weatherForecastApiService, IWeatherRecordRepository weatherRecordRepository, TimeSpan interval, string[] cities)
+		public WeatherForecastUpdaterJob(IWeatherForecastApiService weatherForecastApiService, IWeatherRecordRepository weatherRecordRepository, TimeSpan interval, string[] cities)
 		{
 			_weatherForecastApiService = weatherForecastApiService;
 			_weatherRecordRepository = weatherRecordRepository;
@@ -21,9 +21,10 @@ namespace WeatherForecaster.Domain.Services
 			_cities = cities;
 		}
 
-		public void Start()
+		public async Task StartAsync()
 		{
 			_timerTask = DoWorkAsync();
+			await _timerTask;
 		}
 
 		public async Task StopAsync()
@@ -34,7 +35,12 @@ namespace WeatherForecaster.Domain.Services
 			}
 
 			_cts.Cancel();
-			await _timerTask;
+
+			if (!_timerTask.IsFaulted)
+			{
+				await _timerTask;
+			}
+
 			_cts.Dispose();
 		}
 

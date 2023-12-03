@@ -18,9 +18,9 @@ namespace WeatherForecaster.Tests.Unit
             var interval = TimeSpan.FromSeconds(1);
             var cities = new[] { "City1", "City2" };
 
-            var updaterTask = new WeatherForecastUpdaterTask(apiServiceMock.Object, repoMock.Object, interval, cities);
+            var updaterTask = new WeatherForecastUpdaterJob(apiServiceMock.Object, repoMock.Object, interval, cities);
 
-            updaterTask.Start();
+            updaterTask.StartAsync();
 
             // Wait for at least two ticks
             await Task.Delay(2500);
@@ -39,9 +39,9 @@ namespace WeatherForecaster.Tests.Unit
             var interval = TimeSpan.FromSeconds(1);
             var cities = new[] { "City1", "City2" };
 
-            var updaterTask = new WeatherForecastUpdaterTask(apiServiceMock.Object, repositoryMock.Object, interval, cities);
+            var updaterTask = new WeatherForecastUpdaterJob(apiServiceMock.Object, repositoryMock.Object, interval, cities);
 
-            updaterTask.Start();
+            updaterTask.StartAsync();
             await updaterTask.StopAsync();
 
             Assert.True(updaterTask.GetTimerTask()?.IsCompleted ?? false);
@@ -50,7 +50,7 @@ namespace WeatherForecaster.Tests.Unit
 
     internal static class WeatherForecastUpdaterTaskExtensions
     {
-        public static Task? GetTimerTask(this WeatherForecastUpdaterTask updaterTask)
+        public static Task? GetTimerTask(this WeatherForecastUpdaterJob updaterTask)
         {
             return updaterTask.GetType().GetField(
                 "_timerTask", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
