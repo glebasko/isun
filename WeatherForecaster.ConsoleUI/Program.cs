@@ -20,7 +20,7 @@ namespace WeatherForecaster.ConsoleUI
 			WeatherForecastUpdaterJob? weatherForecastUpdaterJob = null;
 
 			try
-			{
+			{		
 				Console.WriteLine("Starting the application..");
 				Console.OutputEncoding = Encoding.UTF8; // to ensure that lithuanian letters are shown correctly
 
