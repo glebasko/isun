@@ -13,7 +13,7 @@ namespace WeatherForecaster.ConsoleUI
 {
 	public static class ConsoleHelper
 	{
-		// TODO: write tests for this method
+		// in future consider capturing the console output in a separate object without directly writing to the console
 		public static bool ProcessAndValidateCmdArgs(string[] cmdArgs, IEnumerable<string> apiCities, out string[] outputArgs)
 		{
 			outputArgs = null;
@@ -37,9 +37,7 @@ namespace WeatherForecaster.ConsoleUI
 				if (!apiCities.Contains(arg))
 				{
 					Console.WriteLine($"\nThere is no weather forecast available for city \"{arg}\".");
-
 					PrintOutCities(apiCities);
-
 					Console.WriteLine("\nPlease run the application with the cities from the list above.");
 
 					return false;
