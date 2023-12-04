@@ -1,8 +1,6 @@
 ﻿## Overview
 
 The Weather Forecaster Console Application is a command-line tool that provides weather forecasts for specified cities. It interacts with a weather forecast API and stores the retrieved data in a database.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 ### Built With
@@ -15,14 +13,11 @@ The Weather Forecaster Console Application is a command-line tool that provides 
 
 Application consists of 5 individual projects (layers):
 
-* WeatherForecaster.ConsoleUI: entry point of the application. Start the application and print outs the results to the console.
-* WeatherForecaster.Domain: domain layer of the application. Contains DTOs, interfaces and services.
-* WeatherForecaster.Infrastructure: infrastructure layer of the application. Contains a helper class to build the configuration file alongside with logging.
-* WeatherForecaster.Persistance: persistance layer of the application. Contains the EF Core DbContext, Entities, Migrations, Repositories and everything that is related to the database access.
-* WeatherForecaster.Tests: contains integration and unit tests
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+* **WeatherForecaster.ConsoleUI**: entry point of the application. Start the application and print outs the results to the console.
+* **WeatherForecaster.Domain**: domain layer of the application. Contains DTOs, interfaces and services.
+* **WeatherForecaster.Infrastructure**: infrastructure layer of the application. Contains a helper class to build the configuration file alongside with logging.
+* **WeatherForecaster.Persistance**: persistance layer of the application. Contains the EF Core DbContext, Entities, Migrations, Repositories and everything that is related to the database access.
+* **WeatherForecaster.Tests**: contains integration and unit tests
 
 
 <!-- GETTING STARTED -->
@@ -61,11 +56,4 @@ Replace city1, city2, etc., with the names of the cities from the API:
 <!-- CONTACT -->
 ## Contact
 
-@glebas.kovalenka@gmail.com
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+glebas.kovalenka@gmail.com
