@@ -51,7 +51,7 @@ Replace city1, city2, etc., with the names of the cities from the API:
 * Paris
 * Tunis
 * Oslo
-* N'Djamena"
+* N'Djamena
 
 <!-- CONTACT -->
 ## Contact
