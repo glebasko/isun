@@ -24,7 +24,7 @@ Application consists of 5 individual projects (layers):
 ## Getting Started
 
 ### Prerequisites
-
+* .NET Core SDK Download here: https://dotnet.microsoft.com/en-us/download
 * Database connection (configured in appsettings.json)
 * API base URL (configured in appsettings.json)
 
